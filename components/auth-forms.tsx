@@ -148,12 +148,12 @@ export function LoginForm({
     <div className="space-y-5">
       <GoogleButton label="Continue with Google" googleEnabled={googleEnabled} />
       <Divider />
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} autoComplete="off" className="space-y-4">
         {error && <ErrorBox message={error} />}
         <Field label="Email" required>
           <Input
             type="email"
-            autoComplete="email"
+            autoComplete="off"
             placeholder=""
             value={email}
             onChange={(event) => setEmail(event.target.value)}
@@ -164,7 +164,7 @@ export function LoginForm({
           <div className="relative">
             <Input
               type={showPassword ? "text" : "password"}
-              autoComplete="current-password"
+              autoComplete="new-password"
               placeholder=""
               value={password}
               onChange={(event) => setPassword(event.target.value)}
@@ -237,7 +237,7 @@ export function RegisterForm({ googleEnabled }: { googleEnabled: boolean }) {
     <div className="space-y-5">
       <GoogleButton label="Sign up with Google" googleEnabled={googleEnabled} />
       <Divider />
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} autoComplete="off" className="space-y-4">
         {error && <ErrorBox message={error} />}
 
         <div>
@@ -274,7 +274,7 @@ export function RegisterForm({ googleEnabled }: { googleEnabled: boolean }) {
         <Field label="Name" required>
           <Input
             type="text"
-            autoComplete="name"
+            autoComplete="off"
             placeholder="Your name"
             value={name}
             onChange={(event) => setName(event.target.value)}
@@ -284,7 +284,7 @@ export function RegisterForm({ googleEnabled }: { googleEnabled: boolean }) {
         <Field label="Email" required>
           <Input
             type="email"
-            autoComplete="email"
+            autoComplete="off"
             placeholder=""
             value={email}
             onChange={(event) => setEmail(event.target.value)}

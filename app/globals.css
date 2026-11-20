@@ -62,3 +62,14 @@
     radial-gradient(ellipse 45% 40% at 15% 10%, rgba(168, 85, 247, 0.25), transparent 70%),
     radial-gradient(ellipse 40% 35% at 50% 100%, rgba(34, 211, 238, 0.1), transparent 70%);
 }
+
+/* Prevent Chrome/Edge/Safari autofill from styling inputs with light blue */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: #f1f5f9;
+  transition: background-color 5000s ease-in-out 0s;
+  box-shadow: inset 0 0 20px 20px rgba(13, 7, 25, 0.95);
+}
