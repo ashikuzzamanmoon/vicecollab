@@ -8,11 +8,13 @@ const bebasNeue = Bebas_Neue({
   variable: "--font-bebas-neue",
   subsets: ["latin"],
   weight: "400",
+  display: "swap",
 });
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {

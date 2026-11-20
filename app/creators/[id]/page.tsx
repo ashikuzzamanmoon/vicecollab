@@ -7,7 +7,20 @@ import { formatUSD } from "@/lib/payments";
 import { formatDate, formatNumber } from "@/lib/utils";
 import { prisma } from "@/lib/prisma";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  try {
+    const creators = await prisma.creatorProfile.findMany({
+      where: { isPublished: true },
+      select: { id: true },
+      take: 20,
+    });
+    return creators.map((c) => ({ id: c.id }));
+  } catch {
+    return [];
+  }
+}
 
 function initials(name: string): string {
   const parts = name.trim().split(/\s+/);
@@ -66,6 +79,8 @@ export default async function CreatorProfilePage({
           <img
             src={creator.bannerUrl}
             alt=""
+            loading="eager"
+            decoding="async"
             className="h-full w-full object-cover"
           />
         ) : (
@@ -81,6 +96,8 @@ export default async function CreatorProfilePage({
             <img
               src={creator.avatarUrl}
               alt={`${creator.displayName} avatar`}
+              loading="eager"
+              decoding="async"
               className="h-28 w-28 rounded-full border-4 border-night-950 object-cover sm:h-32 sm:w-32"
             />
           ) : (

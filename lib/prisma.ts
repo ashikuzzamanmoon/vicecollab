@@ -11,14 +11,12 @@ function createClient() {
   return new PrismaClient({ adapter });
 }
 
-// Reuse a single PrismaClient in development to avoid exhausting
-// connections on hot reloads (standard Next.js pattern).
+// Reuse a single PrismaClient across all invocations (including warm serverless containers)
+// to avoid exhausting connections and eliminate handshake latency.
 const globalForPrisma = globalThis as unknown as {
   prisma?: PrismaClient;
 };
 
 export const prisma = globalForPrisma.prisma ?? createClient();
 
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
-}
+globalForPrisma.prisma = prisma;

@@ -10,8 +10,21 @@ import {
 import { DirectoryFilters } from "@/components/directory-filters";
 import { EmptyState, PageHeader, buttonClasses } from "@/components/ui";
 import { prisma } from "@/lib/prisma";
+import { unstable_cache } from "next/cache";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
+
+const getCachedCreators = unstable_cache(
+  async () => {
+    return prisma.creatorProfile.findMany({
+      where: { isPublished: true },
+      include: { packages: true, reviews: true },
+      orderBy: { followers: "desc" },
+    });
+  },
+  ["creators-directory-list"],
+  { revalidate: 60, tags: ["creators"] },
+);
 
 type SortKey = "followers" | "price-asc" | "price-desc" | "rating";
 
@@ -90,20 +103,19 @@ export default async function CreatorsPage({
     ? (platformRaw as Platform)
     : null;
 
-  const where: Prisma.CreatorProfileWhereInput = { isPublished: true };
-  if (platform) where.platforms = { has: platform };
-  if (niche) where.niches = { has: niche };
-  if (country) where.audienceCountries = { has: country };
+  // Fetch all published creators from cache (0ms DB delay) and filter in memory
+  const allCreators = await getCachedCreators();
 
-  const creators = await prisma.creatorProfile.findMany({
-    where,
-    include: { packages: true, reviews: true },
-    orderBy: { followers: "desc" },
-  });
-
-  // Text search runs in JS: Prisma has no case-insensitive substring match
-  // on String[] elements, and niches must be searchable too.
-  let results = creators;
+  let results = allCreators;
+  if (platform) {
+    results = results.filter((c) => c.platforms.includes(platform));
+  }
+  if (niche) {
+    results = results.filter((c) => c.niches.includes(niche));
+  }
+  if (country) {
+    results = results.filter((c) => c.audienceCountries.includes(country));
+  }
   if (q !== "") {
     const needle = q.toLowerCase();
     results = results.filter(

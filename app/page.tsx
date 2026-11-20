@@ -5,7 +5,7 @@ import { Card, EmptyState, buttonClasses } from "@/components/ui";
 import { prisma } from "@/lib/prisma";
 import { getCommissionRate } from "@/lib/settings";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 const HOW_IT_WORKS = [
   {

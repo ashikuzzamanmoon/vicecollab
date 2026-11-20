@@ -50,6 +50,8 @@ export function CreatorCard({ creator }: { creator: CreatorCardData }) {
             <img
               src={creator.avatarUrl}
               alt={`${creator.displayName} avatar`}
+              loading="lazy"
+              decoding="async"
               className="h-14 w-14 shrink-0 rounded-full border border-violet-400/30 object-cover"
             />
           ) : (

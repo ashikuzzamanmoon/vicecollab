@@ -1,11 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  compress: true,
+  poweredByHeader: false,
   images: {
-    // Google profile pictures (OAuth sign-in avatars). User-supplied avatar
-    // URLs are rendered with plain <img> tags, not next/image.
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [{ protocol: "https", hostname: "lh3.googleusercontent.com" }],
+    minimumCacheTTL: 86400,
   },
   // NOTE: `cacheComponents` is intentionally NOT enabled. It forbids the
   // `export const dynamic = "force-dynamic"` route config this app uses on
