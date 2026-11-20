@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+/*
+ * GTA Creator Marketplace — Vice City / Leonida design system.
+ * Dark neon nights, sunset gradients, bold display type. Original styling
+ * inspired by the vibe only — no Rockstar assets, logos, or key art.
+ */
+@theme {
+  --color-night-950: #07040f;
+  --color-night-900: #0d0719;
+  --color-night-800: #160b2a;
+  --color-night-700: #221239;
+
+  --color-neon-pink: #ff2e93;
+  --color-neon-magenta: #ff4ecd;
+  --color-neon-purple: #a855f7;
+  --color-neon-cyan: #22d3ee;
+  --color-sunset-orange: #ff7a3d;
+  --color-sunset-yellow: #ffd166;
+}
+
+/* Font tokens reference next/font CSS variables, so they must stay inline. */
+@theme inline {
+  --font-display: var(--font-bebas-neue), "Arial Narrow", sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-night-950 font-sans text-slate-200 antialiased;
+  }
+
+  ::selection {
+    background: rgba(255, 46, 147, 0.4);
+  }
+}
+
+/* Sunset gradient text for display headings and the logo. */
+@utility text-sunset-gradient {
+  background-image: linear-gradient(90deg, #ff2e93, #ff7a3d, #ffd166);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Neon glow ring for featured cards and key CTAs. */
+@utility neon-ring {
+  box-shadow:
+    0 0 0 1px rgba(255, 46, 147, 0.35),
+    0 0 28px rgba(255, 46, 147, 0.22);
+}
+
+/* Vice City sunset backdrop: layered neon glows for hero sections. */
+@utility bg-vice-sunset {
+  background:
+    radial-gradient(ellipse 60% 45% at 50% 0%, rgba(255, 46, 147, 0.28), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 85% 10%, rgba(255, 122, 61, 0.22), transparent 70%),
+    radial-gradient(ellipse 45% 40% at 15% 10%, rgba(168, 85, 247, 0.25), transparent 70%),
+    radial-gradient(ellipse 40% 35% at 50% 100%, rgba(34, 211, 238, 0.1), transparent 70%);
+}
