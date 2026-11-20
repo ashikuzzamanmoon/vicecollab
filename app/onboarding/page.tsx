@@ -29,6 +29,8 @@ export default async function OnboardingPage() {
     },
   });
   if (!user) redirect("/login");
+  // Admin accounts go directly to the Admin console — no onboarding needed.
+  if (user.role === "ADMIN") redirect("/admin");
   // A profile already exists — nothing left to choose here.
   if (user.creatorProfile || user.brandProfile) redirect("/dashboard");
 
@@ -54,7 +56,8 @@ export default async function OnboardingPage() {
                     type="radio"
                     name="role"
                     value={option.value}
-                    defaultChecked={user.role === option.value}
+                    defaultChecked={option.value === (user.role === "BRAND" ? "BRAND" : "CREATOR")}
+                    required
                     className="peer sr-only"
                   />
                   <span className="block h-full rounded-2xl border border-violet-400/25 bg-night-900/80 p-4 transition peer-checked:border-neon-pink peer-checked:bg-neon-pink/10 peer-checked:shadow-[0_0_24px_rgba(255,46,147,0.25)] hover:border-violet-400/50">
