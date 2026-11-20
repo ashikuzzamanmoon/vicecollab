@@ -21,7 +21,8 @@ export default async function LoginPage({
   if (session?.user?.id) redirect(callbackUrl);
 
   const googleEnabled = Boolean(
-    process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET,
+    (process.env.GOOGLE_CLIENT_ID || process.env.AUTH_GOOGLE_ID) &&
+      (process.env.GOOGLE_CLIENT_SECRET || process.env.AUTH_GOOGLE_SECRET),
   );
 
   return (

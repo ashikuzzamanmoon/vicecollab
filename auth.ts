@@ -13,6 +13,9 @@ const credentialsSchema = z.object({
   password: z.string().min(1),
 });
 
+const googleClientId = process.env.GOOGLE_CLIENT_ID || process.env.AUTH_GOOGLE_ID;
+const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET || process.env.AUTH_GOOGLE_SECRET;
+
 const providers = [
   Credentials({
     name: "Email and password",
@@ -38,18 +41,20 @@ const providers = [
       };
     },
   }),
-  // Google OAuth is only enabled when both env vars are set.
-  ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
+  // Google OAuth is enabled when client ID and secret are present.
+  ...(googleClientId && googleClientSecret
     ? [
         Google({
-          clientId: process.env.GOOGLE_CLIENT_ID,
-          clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+          clientId: googleClientId,
+          clientSecret: googleClientSecret,
         }),
       ]
     : []),
 ];
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
+  trustHost: true,
   adapter: PrismaAdapter(prisma),
   // JWT sessions: the Credentials provider requires them (Auth.js v5), and
   // they keep OAuth sign-ins working alongside credentials.
@@ -74,7 +79,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       console.error(error);
     },
   },
-  trustHost: true,
   pages: { signIn: "/login" },
   providers,
   callbacks: {
